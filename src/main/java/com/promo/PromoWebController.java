@@ -11,4 +11,10 @@ public class PromoWebController {
         System.out.println("yiyiuyi");
         return "index";
     }
+    @RequestMapping(value="/welcome")
+    public String welcome(){
+
+        System.out.println("Welcome");
+        return "home";
+    }
 }
