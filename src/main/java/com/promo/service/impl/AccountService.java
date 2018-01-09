@@ -71,7 +71,7 @@ public class AccountService implements IAccountService {
         }
         return location;
     }
-    public String authenticateUser(Account account){
+    public Account authenticateUser(Account account){
         try {
             RestTemplate restTemplate = new RestTemplate();
             UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("account.login.url")).build();
@@ -80,11 +80,11 @@ public class AccountService implements IAccountService {
 
         }catch(HttpClientErrorException httpException){
             if(httpException.getStatusCode()== HttpStatus.UNAUTHORIZED)
-                return "site.home";
+                return new Account();//"site.home";
 
         }catch(Exception ex){
-            return "error";
+            return null;//"error";
         }
-        return "promoUserHome";
+        return account;//"promoUserHome";
     }
 }

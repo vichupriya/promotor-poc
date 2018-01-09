@@ -4,6 +4,6 @@ import com.promo.bean.Account;
 
 public interface IAccountService {
     public String register(Account account);
-    public String authenticateUser(Account account);
+    public Account authenticateUser(Account account);
 
 }
