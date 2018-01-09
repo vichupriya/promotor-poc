@@ -6,7 +6,7 @@
 	<groupId>com.promo</groupId>
 	<artifactId>promo-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>promo-web</name>
 	<description>Demo project for Spring Boot</description>
@@ -26,6 +26,13 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.promo</groupId>
+			<artifactId>promoCommon</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -50,7 +57,15 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>3.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

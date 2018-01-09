@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,17 +101,18 @@
           <div class="panel-heading"> <strong class="">Login</strong>
 
           </div>
+          <form:form method="post" action="/login" modelAttribute="loginAccount">
           <div class="panel-body">
             <div class="form-group">
-              <label label-default="" for="inputEmail3" class="col-sm-4 control-label ">Email</label>
+              <label label-default="" for="inputUser" class="col-sm-4 control-label ">Email</label>
               <div class="col-sm-8">
-                <input class="form-control" id="inputEmail3" placeholder="Email" required="" type="email">
+                <form:input path="userName" class="form-control" id="inputUser" placeholder="Email" required="" type="email"/>
               </div>
             </div>
             <div class="form-group">
-              <label label-default="" for="inputPassword3" class="col-sm-4 control-label">Password</label>
+              <label label-default="" for="inputPassword" class="col-sm-4 control-label">Password</label>
               <div class="col-sm-8">
-                <input class="form-control" id="inputPassword3" placeholder="Password" required="" type="password">
+                <form:input path="accountPassword" class="form-control" id="inputPassword" placeholder="Password" required="" type="password"/>
               </div>
             </div>
             <div class="form-group">
@@ -128,6 +130,7 @@
               </div>
             </div>
           </div>
+          </form:form>
           <div class="panel-footer" style="color:black">Not Registered? <a href="#myModal" data-toggle="modal" class="lnk">Register here</a>
 
           </div>
@@ -172,6 +175,9 @@
 
 
 <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
+
+<%--@elvariable id="individualAccount" type=""--%>
+<form:form method="post" action="/registerUser" commandName="individualAccount">
 <div id="myUser" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
   <div class="modal-dialog">
 
@@ -196,18 +202,18 @@
                 </div>
 
                 <div class="form-group">
-                  <input name="email" id="email" class="form-control input-sm" placeholder="Email Address" type="email">
+                  <form:input path="userName" pathname="email" id="email" class="form-control input-sm" placeholder="Email Address" type="email"/>
                 </div>
 
                 <div class="row">
                   <div class="col-xs-6 col-sm-6 col-md-6">
                     <div class="form-group">
-                      <input name="password" id="password" class="form-control input-sm" placeholder="Password" type="password">
+                      <form:input path="accountPassword" name="password" id="password" class="form-control input-sm" placeholder="Password" type="password"/>
                     </div>
                   </div>
                   <div class="col-xs-6 col-sm-6 col-md-6">
                     <div class="form-group">
-                      <input name="password_confirmation" id="password_confirmation" class="form-control input-sm" placeholder="Confirm Password" type="password">
+                      <input name="password_confirmation" id="password_confm" class="form-control input-sm" placeholder="Confirm Password" type="password">
                     </div>
                   </div>
                 </div>
@@ -219,7 +225,7 @@
                       <button type="button" data-dismiss="modal" class="btn btn-danger">Cancel</button>
                     </div>
                     <div class="btn-group" role="group">
-                      <button type="button" class="btn btn-primary">Register</button>
+                      <button type="submit" class="btn btn-primary">Register</button>
                     </div>
                   </div>
                 </div><!--row-->
@@ -232,6 +238,7 @@
     </div>
   </div>
 </div>
+</form:form>
 
 
 <!-- ###################################################################### -->
