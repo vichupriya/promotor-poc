@@ -26,6 +26,8 @@ public class PromotionService implements IPromootionService{
             promotions.setActive(true);
             promotions.setPromotionCode(System.currentTimeMillis());
             promotions.setOwnerLocation(account.getLocation());
+            if(account.getAccountAddresList()!=null && !account.getAccountAddresList().isEmpty())
+                promotions.setBusinessAddress(account.getAccountAddresList().get(0));
         }
         RestTemplate restTemplate = new RestTemplate();
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("promotion.url")).build();

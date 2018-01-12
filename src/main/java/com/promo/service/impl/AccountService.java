@@ -76,8 +76,10 @@ public class AccountService implements IAccountService {
             RestTemplate restTemplate = new RestTemplate();
             UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("account.login.url")).build();
             HttpEntity<Account> loginHttpEntity = new HttpEntity<Account>(account);
-            ResponseEntity<String> loginResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST, loginHttpEntity, String.class);
 
+            ResponseEntity<Account> loginResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST, loginHttpEntity, Account.class);
+            Account authAccount = loginResponseEntity.getBody();
+            return authAccount;
         }catch(HttpClientErrorException httpException){
             if(httpException.getStatusCode()== HttpStatus.UNAUTHORIZED)
                 return new Account();//"site.home";

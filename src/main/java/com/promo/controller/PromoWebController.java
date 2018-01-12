@@ -1,4 +1,4 @@
-package com.promo;
+package com.promo.controller;
 
 import com.promo.bean.Account;
 import com.promo.bean.Address;
@@ -35,28 +35,14 @@ public class PromoWebController {
         return modelAndView;//new ModelAndView("home","individualAccount",new Account());
     }
 
-    @RequestMapping(value = "/promotion")
-    public ModelAndView promo() {
-        ModelAndView modelAndView = new ModelAndView("createPromotion");
-        modelAndView.addObject("promotion",new Promotions());
-        return modelAndView;
-    }
-    @RequestMapping(value = "/createpromotion",method = RequestMethod.POST)
-    public ModelAndView createPromotion(@ModelAttribute("promotion") Promotions promotions, @SessionAttribute(name="account") Account account) {
 
-        promootionService.postPromotion(promotions,account);
-        ModelAndView modelAndView = new ModelAndView("createPromotion");
-        modelAndView.addObject("promotion",new Promotions());
-        return modelAndView;
-    }
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
-    public ModelAndView register(@ModelAttribute("individualAccount") Account account,Model model) {
+    public ModelAndView register(@ModelAttribute("individualAccount") Account account) {
 
-                Account  account1=(Account)model.asMap().get("individualAccount");
-        String accType =account1.getAccountType();
-                account.setId(System.currentTimeMillis());
-        account.setAccountType(PromoUtil.INDIVIDUAL_ACCOUNT_TYPE);
+
+        account.setId(System.currentTimeMillis());
+        //account.setAccountType(PromoUtil.INDIVIDUAL_ACCOUNT_TYPE);
         String registrationResult = accountService.register(account);
         if (!StringUtils.isEmpty(registrationResult) && PromoUtil.SUCCESS_STATUS.equalsIgnoreCase(registrationResult)) {
             ModelAndView modelAndView = new ModelAndView("site.home");
@@ -75,28 +61,34 @@ public class PromoWebController {
     public ModelAndView login(@ModelAttribute("loginAccount") Account account) {
 
         Account result = accountService.authenticateUser(account);
-        String targetView = (result!=null)?(StringUtils.isEmpty(result.getUserName()))?"site.home":"promoUserHome":"error";
-        ModelAndView modelAndView = new ModelAndView(targetView);
-        if ("site.home".equalsIgnoreCase(targetView)) {
+        String targetView ="";
+        if(result!=null &&  !StringUtils.isEmpty(result.getUserName())){
+            String accType =result.getType();
+            targetView = (",Business".equalsIgnoreCase(accType))?"promotion":"promoUserHome";
+            ModelAndView modelAndView = new ModelAndView(targetView);
+            modelAndView.addObject("account",result);
+            return modelAndView;
+        }else{
+            targetView = "site.home";
+            ModelAndView modelAndView = new ModelAndView(targetView);
             modelAndView.addObject("message", "Invalid UserName Or Password");
             modelAndView.addObject("individualAccount", new Account());
             modelAndView.addObject("loginAccount", new Account());
-        }else if("promoUserHome".equalsIgnoreCase(targetView)){
-            account.setAccountPassword("");
-            modelAndView.addObject("account",account);
+            return modelAndView;
         }
-        return modelAndView;
+
+
 
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/businessRegistration")
     public ModelAndView businessRegistration(Model model) {
         Account businessAccount = new Account();
-        businessAccount.setAccountType("Business");
+        //businessAccount.setAccountType("Business");
         List<Address> businessAddressList = new ArrayList<>();
         businessAddressList.add(new Address());
         businessAccount.setAccountAddresList(businessAddressList);
-        businessAccount.setAccountType("Business");
+      //  businessAccount.setAccountType("Business");
         ModelAndView modelAndView = new ModelAndView("businessRegistration");
         modelAndView.addObject("individualAccount", businessAccount);
         return modelAndView;
@@ -108,4 +100,5 @@ public class PromoWebController {
         System.out.println("Welcome");
         return "home";
     }
+
 }

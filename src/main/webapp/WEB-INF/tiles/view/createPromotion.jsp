@@ -28,7 +28,7 @@
                           <label class="control-label " for="message">
                               Description
                           </label>
-                          <form:input path="promotionDescription" type="textarea" class="form-control" cols="40" id="message" name="message" rows="10"></form:input>
+                          <form:textarea path="promotionDescription" class="form-control" cols="40" id="message" name="message" rows="10"></form:textarea>
                       </div>
                       <div class="form-group ">
                           <label class="control-label " >
@@ -38,7 +38,7 @@
                               <div class="form-group row">
                                   <label for="startTime" class="col-2 col-form-label">Start Time</label>
                                   <div class="col-10">
-                                      <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="startTime">
+                                      <form:input path="startTime" class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="startTime"></form:input>
                                   </div>
                               </div>
                               <div class="form-group row">
