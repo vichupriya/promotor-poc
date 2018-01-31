@@ -49,7 +49,15 @@ public class PromoWebController {
             modelAndView.addObject("individualAccount", new Account());
             modelAndView.addObject("loginAccount", new Account());
             return modelAndView;
-        } else {
+        } else if (!StringUtils.isEmpty(registrationResult) && "User Name Already Selected,Please try another One".equalsIgnoreCase(registrationResult)){
+            ModelAndView modelAndView = new ModelAndView("businessRegistration");
+            modelAndView.addObject("message", "User Name Already Selected,Please try another One");
+            account.setUserName("");
+            account.setAccountPassword("");
+            modelAndView.addObject("individualAccount", account);
+            return modelAndView;
+        }
+        else {
             ModelAndView modelAndView = new ModelAndView("error");
             modelAndView.addObject("individualAccount", new Account());
             modelAndView.addObject("loginAccount", new Account());

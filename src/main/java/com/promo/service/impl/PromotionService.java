@@ -26,6 +26,11 @@ public class PromotionService implements IPromootionService{
             promotions.setActive(true);
             promotions.setPromotionCode(System.currentTimeMillis());
             promotions.setOwnerLocation(account.getLocation());
+            promotions.setFormattedAddress(account.getLocation().getFormattedAddress());
+            promotions.setContactEmail(account.getEmailAddress());
+            promotions.setBusinessName(account.getBusinessName());
+            promotions.setContactPhone(account.getContectPhone());
+            promotions.setBusinessType(account.getBusinessType());
             if(account.getAccountAddresList()!=null && !account.getAccountAddresList().isEmpty())
                 promotions.setBusinessAddress(account.getAccountAddresList().get(0));
         }
