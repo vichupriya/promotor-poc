@@ -1,0 +1,11 @@
+applications:
+- name: promo-web
+  host : promoweb
+  memory: 1G
+  domain: cfapps.io
+  instances: 1
+  path: promo-web-0.0.1-SNAPSHOT.war
+  timeout: 180
+  env:
+   TZ : PST
+
