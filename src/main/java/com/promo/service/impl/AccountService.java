@@ -64,6 +64,7 @@ public class AccountService implements IAccountService {
             HttpEntity<String> geoHttpReqEntity = new HttpEntity<>("");
             ResponseEntity<GeoResult> regisrationResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST, geoHttpReqEntity, GeoResult.class);
             location = regisrationResponseEntity.getBody().getResults()[0].getGeometry().getLocation();
+            location.setFormattedAddress(regisrationResponseEntity.getBody().getResults()[0].getFormatted_address());
         }catch(HttpClientErrorException httpException){
           return null;
         }catch(Exception ex){

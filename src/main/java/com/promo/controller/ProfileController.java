@@ -4,8 +4,8 @@ import com.promo.bean.Account;
 import com.promo.bean.Address;
 import com.promo.bean.Promotions;
 import com.promo.bean.geo.Location;
+import com.promo.bean.search.PromoSearchRequest;
 import com.promo.service.IAccountService;
-import com.promo.service.IPromootionService;
 import com.promo.util.PromoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,16 +16,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.promo.service.IPromotionService;
 
 
 @Controller
 @SessionAttributes("account")
-public class PromoWebController {
+public class ProfileController {
 
     @Autowired
     IAccountService accountService;
     @Autowired
-    IPromootionService promootionService;
+    IPromotionService promotionService;
 
     @RequestMapping(value = "/")
     public ModelAndView home() {
@@ -40,7 +41,7 @@ public class PromoWebController {
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public ModelAndView register(@ModelAttribute("individualAccount") Account account) {
 
-
+        
         account.setId(System.currentTimeMillis());
         //account.setAccountType(PromoUtil.INDIVIDUAL_ACCOUNT_TYPE);
         String registrationResult = accountService.register(account);
@@ -49,7 +50,15 @@ public class PromoWebController {
             modelAndView.addObject("individualAccount", new Account());
             modelAndView.addObject("loginAccount", new Account());
             return modelAndView;
-        } else {
+        } else if (!StringUtils.isEmpty(registrationResult) && "User Name Already Selected,Please try another One".equalsIgnoreCase(registrationResult)){
+            ModelAndView modelAndView = new ModelAndView("businessRegistration");
+            modelAndView.addObject("message", "User Name Already Selected,Please try another One");
+            account.setUserName("");
+            account.setAccountPassword("");
+            modelAndView.addObject("individualAccount", account);
+            return modelAndView;
+        }
+        else {
             ModelAndView modelAndView = new ModelAndView("error");
             modelAndView.addObject("individualAccount", new Account());
             modelAndView.addObject("loginAccount", new Account());
@@ -59,15 +68,27 @@ public class PromoWebController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@ModelAttribute("loginAccount") Account account) {
-
-        Account result = accountService.authenticateUser(account);
+        Account validatedAccount = null;
+        if(account !=null && StringUtils.isEmpty(account.getUserName())){
+             validatedAccount = new Account();
+             validatedAccount.setType("promoSearchHome");
+            validatedAccount.setUserName("GUEST");
+        }else {
+            validatedAccount = accountService.authenticateUser(account);
+        }
         String targetView ="";
-        if(result!=null &&  !StringUtils.isEmpty(result.getUserName())){
-            String accType =result.getType();
-            targetView = (",Business".equalsIgnoreCase(accType))?"promotion":"promoUserHome";
+        if(validatedAccount!=null &&  !StringUtils.isEmpty(validatedAccount.getUserName())){
+
+            String accType =validatedAccount.getType();
+            targetView = (",Business".equalsIgnoreCase(accType))?"promotion":"promoSearchHome";
             ModelAndView modelAndView = new ModelAndView(targetView);
-            modelAndView.addObject("account",result);
-            return modelAndView;
+            modelAndView.addObject("account",validatedAccount);
+            if("promoUserHome".equals(targetView)){
+                modelAndView.addObject("promoSearch",new PromoSearchRequest());
+               // promotionService.getRunningPromotions(promoSearchRequest);
+            }
+             return modelAndView;
+           
         }else{
             targetView = "site.home";
             ModelAndView modelAndView = new ModelAndView(targetView);
