@@ -245,7 +245,7 @@ var Popup;
      google.maps.event.addListener(map, "rightclick", function(event) {
         // $("#mydiv").show();
      });
-     $.getScript( "/js/maplabel.js" )
+     $.getScript( "/js/markerlabel.js" )
          .done(function( script, textStatus ) {
              console.log( textStatus );
          })
@@ -273,7 +273,7 @@ function getPromotions(){
       var speciality = $("#speciality").prop("checked") ? 15 : '';
       resturantType =( $("#all").prop("checked")) ? -1 : resturantOnly+":"+barOnly+":"+sportsBar+":"+pub+":"+fineDining+":"+microBrew+":"+pubtavern+":"+pubLounge+":"+speciality;
 
-      resturantType = (resturantType.length==0 || resturantType ===':::::' ) ? '-1':resturantType;
+      resturantType = (resturantType.length==0 || resturantType ==='::::::::' ) ? '-1':resturantType;
       var userLat=lat;//$("#latitude").val();
           var userLong=lng;//$("#longitude").val();
       var milesSelected = $('#mileselect').find(":selected").text();
@@ -325,7 +325,7 @@ function processPromotions(data){
     var bounds = new google.maps.LatLngBounds();
     $.each(data, function (i, promotions) {
 
-        var latlng = new google.maps.LatLng(promotions.ownerLocation.lat, promotions.ownerLocation.lng);
+        var latlng = new google.maps.LatLng(promotions.ownerLat, promotions.ownerLng);
         var markerIconURL =  '/images/default-marker.png';
         if(promotions.businessType ==1)
             markerIconURL ="/assets/images/bar.png";

@@ -16,7 +16,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script>
@@ -24,37 +24,16 @@
 
   </script>
   <style>
-    body {
-      font: 14px Montserrat, sans-serif;
-      line-height: 1.8;
-      color: #f5f6f7;
-    }
-    label{
-      color:black;
-    }
+
+
     p {font-size: 16px;}
-    .margin {margin-bottom: 45px;}
-    .bg-1 {
-      /* Green */
-      color: #ffffff;
-    }
-    .bg-2 {
-      background-color: lightblue; /* Dark Blue */
-      color: #ffffff;
-    }
-    .bg-3 {
-      background-color: #ffffff; /* White */
-      color: #555555;
-    }
-    .bg-4 {
-      background-color: #2f2f2f; /* Black Gray */
-      color: #fff;
-    }
-    .container-fluid {
-      padding-top: 70px;
-      padding-bottom: 70px;
+
+    #advSection{
+      border: solid;
+      border-width: 1px;
     }
     .navbar {
+      background-color:rebeccapurple;
       padding-top: 15px;
       padding-bottom: 15px;
       border: 0;
@@ -71,25 +50,43 @@
 <body>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!-- Navbar -->
-<nav class="navbar navbar-default">
-  <div class="container">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+      <a class="navbar-brand" href="#">PROMO</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+
+        <li><a href="#">Home</a></li>
+
+      </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#section1">About Us</a></li>
-        <li><a href="#section2">Reviews</a></li>
-        <li><a href="#section3">Help</a></li>
+        <form class="navbar-form navbar-left" ">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search in Zipcode">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
 </nav>
+<section id="advSection">
+
+
+</section>
 
 
 </body>

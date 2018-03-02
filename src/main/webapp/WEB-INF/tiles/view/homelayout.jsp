@@ -24,26 +24,12 @@
 
 
   </script>
-  <style>
-
-    .navbar {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      border: 0;
-      border-radius: 0;
-      margin-bottom: 0;
-      font-size: 12px;
-      letter-spacing: 5px;
-    }
-    .navbar-nav  li a:hover {
-      color: #1abc9c !important;
-    }
-  </style>
+  
 </head>
 <body>
 <div><tiles:insertAttribute name="header" /></div>
-        <div style="float:left;padding:10px;width:80%;border-left:1px solid pink;">
-        <tiles:insertAttribute name="body" /></div>
+
+<div>  <tiles:insertAttribute name="body" /></div>
         <div style="clear:both"><tiles:insertAttribute name="footer" /></div>
 </body>
 </html>
