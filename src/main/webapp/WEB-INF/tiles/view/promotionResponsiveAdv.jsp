@@ -277,6 +277,7 @@ svg.icon {
    }
 </script>
 
+
 <div class="container-fluid" id="searchResultContainer">
 
 <div class="row" style="background-color: orange;padding:2px">
