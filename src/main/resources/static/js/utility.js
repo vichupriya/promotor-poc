@@ -37,7 +37,7 @@ function getCurrentDateTimeAsString(){
     var dNow = new Date(new Date().toString());
     localDateTimeString=  dNow.toISOString();
     return localDateTimeString;
-    alert(localDateTimeString);
+
 }
 
 

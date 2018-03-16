@@ -71,48 +71,40 @@
 								  <th>#</th>
 								  <th>Description</th>
 								  <th>StartDate</th>
+								  <th>EndDate</th>
 								  <th>Number Of hits </th>
 								  <th>Actions</th>
 							  </tr>
 							  </thead>
-							  <tbody id="items">
-								<tr>
-									<td>
-										1
-									</td>
-									<td>
-										lunch 30% Off
-									</td>
-									<td>
-										1/8/2017
-									</td>
-									<td>
-										100
-									</td>
-									<td>
-										<input type="button" value="Edit">
-									</td>
+							  <c:forEach items="${accountPromotionList}" var="promotion">
+								  <c:out value="${pr.name}"/>
+								  <c:out value="${userForm.address}"/>
+								  <tbody id="items">
+								  <tr>
+									  <td>
+										 1
+									  </td>
+									  <td>
+										  <c:out value="${promotion.promotionDescription}"/>
+									  </td>
+									  <td>
+										  <c:out value="${promotion.startTime}"/>
+									  </td>
+									  <td>
+										  <c:out value="${promotion.endTime}"/>
+									  </td>
+									  <td>
+										 11
+									  </td>
+									  <td>
+										  <input type="button" value="Edit">
+									  </td>
 
-								</tr>
-								<tr>
-									<td>
-										1
-									</td>
-									<td>
-										lunch 30% Off
-									</td>
-									<td>
-										1/8/2017
-									</td>
-									<td>
-										100
-									</td>
-									<td>
-										<input type="button" value="ReActivate">
-									</td>
+								  </tr>
 
-								</tr>
-							  </tbody>
+								  </tbody>
+							  </c:forEach>
+
 						  </table>
 						  <hr>
 						  <div class="row">

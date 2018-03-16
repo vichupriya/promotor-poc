@@ -25,16 +25,85 @@
 <script src="/js/utility.js"></script>
 
 
+
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlHTuGOT_CQSVDNMlA4_MmyyyNhaULVy0&callback=initMap">
 </script>
 
 <head>
     <style>
+#searchResultContainer{
+    height:auto;
+}
+body {
+    color: #555;
+    font-family: Avenir Next,Calibri,Helvetica,Roboto,sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+h1, h2, h3,  h5 {
+    margin: 0;
+    margin-bottom: .5em;
+    padding: 0;
+    color: #222;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.25;
+}
 
+h4 {
+    margin: 0;
+    margin-bottom: .5em;
+    padding: 0;
+    color: rebeccapurple;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+h6 {
+    margin: 0;
+    margin-bottom: .5em;
+    padding: 0;
+    color: #222;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.code-attached-copy .button {
+    display: inline-block;
+    width: auto;
+    padding: 1.2em .75em;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    vertical-align: middle;
+}
+#cardAddress{
+    height: 1px;
+}
+#promoDesc{
+    border: thin;
+    color: orangered;
+}
+.offer-code{
+    border: solid;
+
+}
+svg.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    font-style: normal;
+    vertical-align: top;-align: top;
+}
+.offer-redemption-content {
+    margin: 0 auto 1em;
+    text-align: center;
+}
         /* General sizing */
         ul.dropdown-lr {
-            width: 300px;
+            width: 150px;
         }
 
         /* mobile fix */
@@ -44,8 +113,25 @@
         .dropdown-lr label {
             color: #eee;
         }
-
-
+.modal-close, .modal-header .close {
+    z-index: 18;
+    display: block;
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    color: #24b7e3;
+    fill: #24b7e3;
+    font-size: 20px;
+    cursor: pointer;
+}
+.img-rounded{
+    height: 80px;
+}
+#promoCard{
+    background:white ;
+    border: 2px;
+    border-style: outset;
+}
         .markerlabels {
             color: black;
             border-radius: 5px;
@@ -64,9 +150,9 @@
             padding: 5px;
         }
         #map{
-            position: relative;
-            
-            height: 350px;
+
+
+            height: 550px;
             width: auto;
             overflow: hidden;
 
@@ -79,11 +165,81 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
+        #searchWithfilterBtn{
+            width: 70px;
+            height:30px;
+            align-content: center;
+        }
+   #searchPanel{
+       background-color: orange;
+       padding: 5px;
 
-   
+       height: 40px;
+       width: auto;
+   }
+     #promotype{
+
+         border-color: rebeccapurple;
+         border-style: solid;
+         border-width: 1px;
+
+
+     }
+       #btnPanel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+/*Business Card Css */
+.business-card {
+    border: 1px solid #cccccc;
+    background: #f8f8f8;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+
+}
+.profile-img {
+    height: 120px;
+    background: white;
+}
+.job {
+    color: #666666;
+    font-size: 17px;
+}
+.mail {
+    font-size: 16px;
+}
+@media print{
+
+    #print-view{
+        display:block;
+
+    }
+
+    #searchResultContainer {
+        visibility:hidden;
+    }
+   #promoFooter{
+        visibility:hidden;
+    }
+   #promoActions{
+       visibility:hidden;
+   }
+
+}
+#cardContainer{
+    background-color: lightblue;
+    height: 150px;
+    width: 400px;
+    overflow-y: auto;
+}
     </style>
+
 </head>
 <body>
+
 <script>
     var lat;
     var lng;
@@ -97,216 +253,114 @@
         });
         */
         $('#mileselect').on('change', function() {
+            distanceSelected=$('#mileselect').find(":selected").text();
             getPromotions();
         })
-        $("#all").change(function ()
-            {
-                if($("#all").prop("checked")) {
-                    getPromotions();
-                    $(':checkbox').prop('checked', true);
-                }else{
-                    $(':checkbox').prop('checked', false);
-                    clearMarkerArray();
-                }
+        $('#searchWithfilterBtn').on('click', function() {
+            distanceSelected=$('#mileselect').find(":selected").text();
+            getPromotions();
+        })
 
-            }
-        );
-        $("#resturantOnly").change(function ()
-            {
-                if($("#resturantOnly").prop("checked") && !($("#all").prop("checked"))){
-                    getPromotions();
-                }else{
-                    $("#all").prop('checked',false);
-                    clearMarkerArrayForType("2");
-                }
-
-            }
-        );
-        $("#bar").change(function ()
-            {
-               if($("#bar").prop("checked")) {
-                   getPromotions();
-               }else{
-                   $("#all").prop('checked',false);
-                   clearMarkerArrayForType("1");
-               }
-            }
-        );
-        $("#sportsBar").change(function ()
-            {
-                if($("#sportsBar").prop("checked")) {
-                    getPromotions();
-                }
-                else{
-                    $("#all").prop('checked',false);
-                    clearMarkerArrayForType("3");
-                }
-            }
-        );
-        $("#pubtavern").change(function ()
-            {
-                if($("#pubtavern").prop("checked")) {
-                    getPromotions();
-                }else{
-                    $("#all").prop('checked',false);
-                    clearMarkerArrayForType("10");
-                }
-            }
-        );
-        $("#publounge").change(function ()
-            {
-                if($("#publounge").prop("checked")) {
-                    getPromotions();
-                }else{
-                    $("#all").prop('checked',false);
-                    clearMarkerArrayForType("11");
-                }
-            }
-        );
-        $("#microbrew").change(function ()
-            {
-               if($("#microbrew").prop("checked")) {
-                   getPromotions();
-               }else{
-                   $("#all").prop('checked',false);
-                   clearMarkerArrayForType("6");
-               }
-            }
-        );
-        $("#diner").change(function ()
-            {
-               if($("#diner").prop("checked")){
-                   getPromotions();
-               }else {
-                   $("#all").prop('checked', false);
-                   clearMarkerArrayForType("7");
-               }
-
-            }
-        );
-
-        $("#speciality").change(function ()
-            {
-               if($("#speciality").prop("checked")) {
-                   getPromotions();
-               }else{
-                   $("#all").prop('checked', false);
-               }
-            }
-        );
-        $("#pub").change(function ()
-            {
-                if($("#speciality").prop("checked")) {
-                    getPromotions();
-                }else{
-                    $("#all").prop('checked', false);
-                }
-            }
-        );
         
     });
     function submitSearchFromModal(){
-        $("#userZipCode").val($("searchZipCode").val());
+        userZip= $("#cityzip").val();
+      //  distanceSelected=$('#mileselect').find(":selected").text();
+        searchTypeCode="SEARCH_IN_ZIPCODE";
         getPromotions();
+        searchTypeCode="";
     }
-   
+   function printPromo(){
+       var printView = $("#print-view");
+       printView.innerHTML = printContent;
+       window.print();
+   }
 </script>
 
+<div class="container-fluid" id="searchResultContainer">
 
-  <div class="container" >
-
-            <div class="row">
+<div class="row" style="background-color: orange;padding:2px">
 
 
-                <form class="form-inline" role="form">
 
-                    <div class="form-group" style="height:69px">
-                        <div class="dropdown">
-                            <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown">Where do you want to go?
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#" class="small" data-value="option1" tabIndex="-1">
-                                        <input type="checkbox" id="all"/>&nbsp;All
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option2" tabIndex="-1">
-                                        <input type="checkbox" id="resturantOnly" />&nbsp;Resturant Only
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option3" tabIndex="-1">
-                                        <input type="checkbox" id="bar"/>&nbsp;Bar
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option4" tabIndex="-1">
-                                        <input type="checkbox" id="sportsBar"/>&nbsp;Sports Bar
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option5" tabIndex="-1">
-                                        <input type="checkbox" id="pubtavern"/>&nbsp;Pub/Tavern
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option6" tabIndex="-1">
-                                        <input type="checkbox" id="publounge"/>&nbsp;Pub/Lounge
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option6" tabIndex="-1">
-                                        <input type="checkbox" id="pub"/>&nbsp;Pub
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option6" tabIndex="-1">
-                                        <input type="checkbox" id="diner"/>&nbsp;Diner
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option6" tabIndex="-1">
-                                        <input type="checkbox" id="microbrew"/>&nbsp;MicroBrew
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="small" data-value="option6" tabIndex="-1">
-                                        <input type="checkbox" id="speciality"/>&nbsp;Speciality
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        <div class="col-sm-2 col-md-2 col-lg-2 col-md-offset-4" id="btnPanel">
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" id="promotype">Where do you want to go?
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#" class="small" data-value=-1" tabIndex="-1">
+                            <input type="checkbox" id="all"/>&nbsp;All
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="small" data-value="1" tabIndex="-1">
+                            <input type="checkbox" id="resturantOnly" />&nbsp;Resturant Only
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="small" data-value="2" tabIndex="-1">
+                            <input type="checkbox" id="bar"/>&nbsp;Bar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="small" data-value="3" tabIndex="-1">
+                            <input type="checkbox" id="sportsBar"/>&nbsp;Sports Bar
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="small" data-value="4" tabIndex="-1">
+                            <input type="checkbox" id="pubtavern"/>&nbsp;Pub/Tavern
+                        </a>
+                    </li>
 
-                    <div class="form-group" style="height:69px">
-                        <label>How Far?</label>
-                        <select class="form-control" id="mileselect" style="font-size: 12px;">
-                            <option>More Than 5 Miles</option>
-                            <option>With in blocks of me</option>
-                            <option>1 to 2 Miles</option>
-                            <option>2 to 5 Miles</option>
+                    <li>
+                        <a href="#" class="small" data-value="5" tabIndex="-1">
+                            <input type="checkbox" id="microbrew"/>&nbsp;MicroBrew
+                        </a>
+                    </li>
 
-                        </select>
-                    </div>
-                    </form>
+                    <li>
 
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <button type="button" id="searchWithfilterBtn" class="btn btn-info" >Apply</button>
+
+                    </li>
+                </ul>
             </div>
+            <select class="form-control" id="mileselect" style="font-size: 12px;background-color: orange;width:100px;color: white">
+                <option>How Far?</option>
+                <option>With in blocks of me</option>
+                <option>1 to 2 Miles</option>
+                <option>2 to 5 Miles</option>
+                <option>More Than 5 Miles</option>
+            </select>
+        </div>
 
-  <div class="row">
-    <div class="col-sm-3" style="background-color:lavender;">.col-sm-3</div>
+
+
+
+
+
+</div>
+    <div class="row">
+        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+        <!-- Add the extra clearfix for only the required viewport -->
+        <div class="clearfix visible-xs-block"></div>
+
+        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+    </div>
+    <div class="row" >
+        <div class="col-sm-3" style="" id="cardContainer"></div>
+        <div class="clearfix visible-xs-block"></div>
     <div class="col-sm-6" ><div id="map"></div></div>
+      <div class="col-sm-4" style="">.col-sm-3</div>
+  </div>
+  </div>
 
-  </div>
-  </div>
 <form id="searchForm" action="${pageContext.request.contextPath}/activepromotions"></form>
-
-
-    
-
-
- 
-
 
 
 <input name="animation" type="hidden">
@@ -328,9 +382,44 @@
         </div>
     </div>
 </div>
-<<div id="noPromoAlert" class="alert alert-warning alert-dismissable fade in">
+<div id="noPromoAlert" class="alert alert-warning alert-dismissable fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>No Active Promotions going on,Better Luck Next Time!</strong>
+    <strong style="color: red">No Active Promotions Going On!</strong>
 </div>
+<div class="modal fade" id="promoInfoModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+
+            <div class="modal-header"><span class="modal-close js-close" data-dismiss="modal" aria-label="Close"><svg class="icon icon-close"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-close"></use></svg></span></div>
+            <div class="modal-body">
+
+                <div class="business-card" style="background-color: white;border: 0px">
+                    <div class="media">
+                        <div class="media-left">
+                            <img class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
+
+                        </div>
+
+                        <div class="media-body" id="promoBusinessInfo">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="promoActions" style="text-align: center">
+                <button type="button" class="btn btn-warning" >Download</button>
+                <button type="button" class="btn btn-warning" onclick="printPromo()">Print</button>
+                <button type="button" class="btn btn-warning" > <div class="mail"><a href="mailto:">Email</a> </div></button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 </body>
 </html>

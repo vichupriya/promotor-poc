@@ -33,9 +33,9 @@
       border-width: 1px;
     }
     .navbar {
-      background-color:rebeccapurple;
+      background-color:#5b5b5b;
       padding-top: 15px;
-      padding-bottom: 15px;
+      padding-bottom: 1px;
       border: 0;
       border-radius: 0;
       margin-bottom: 0;
@@ -48,6 +48,27 @@
   </style>
 </head>
 <body>
+<script>
+
+    $(document).ready(function(){
+
+        $( "#navZipcodeSearchForm" ).submit(function( event ) {
+            userZip= $("#zipCodeGloabalSearchText").val();
+            searchTypeCode="SEARCH_IN_ZIPCODE";
+            getPromotions();
+            searchTypeCode="";
+        })
+
+
+
+    });
+    function submitSearchInZipCode(){
+        userZip= $("#zipCodeGloabalSearchText").val();
+        searchTypeCode="SEARCH_IN_ZIPCODE";
+        getPromotions();
+        searchTypeCode="";
+    }
+</script>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!-- Navbar -->
 <nav class="navbar navbar-inverse">
@@ -58,35 +79,35 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">PROMO</a>
+      <a class="navbar-brand" href="#" style="color: orange">PROMO</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
 
-        <li><a href="#">Home</a></li>
+        <li><a href="${contextPath}/">Home</a></li>
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <form class="navbar-form navbar-left" ">
+        <form class="navbar-form navbar-left" id="navZipcodeSearchForm" action="javascript:submitSearchInZipCode();">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search in Zipcode">
+            <input type="text" id="zipCodeGloabalSearchText" class="form-control" placeholder="Search in Zipcode" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+
             <div class="input-group-btn">
-              <button class="btn btn-default" type="submit">
+              <button class="btn btn-default" type="button" id="btnZipSearch" onclick="submitSearchInZipCode()">
                 <i class="glyphicon glyphicon-search"></i>
               </button>
             </div>
           </div>
         </form>
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+        <li><a href="${contextPath}/businessRegistration"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="${contextPath}/signin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
 </nav>
-<section id="advSection">
 
-
-</section>
 
 
 </body>

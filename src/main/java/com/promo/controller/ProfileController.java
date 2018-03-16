@@ -30,12 +30,18 @@ public class ProfileController {
 
     @RequestMapping(value = "/")
     public ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView("promoSearchHome");
+        modelAndView.addObject("individualAccount", new Account());
+        modelAndView.addObject("loginAccount", new Account());
+        return modelAndView;//new ModelAndView("home","individualAccount",new Account());
+    }
+    @RequestMapping(value = "/signin")
+    public ModelAndView singinHome() {
         ModelAndView modelAndView = new ModelAndView("site.home");
         modelAndView.addObject("individualAccount", new Account());
         modelAndView.addObject("loginAccount", new Account());
         return modelAndView;//new ModelAndView("home","individualAccount",new Account());
     }
-
 
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
@@ -83,8 +89,13 @@ public class ProfileController {
             targetView = (",Business".equalsIgnoreCase(accType))?"promotion":"promoSearchHome";
             ModelAndView modelAndView = new ModelAndView(targetView);
             modelAndView.addObject("account",validatedAccount);
-            if("promoUserHome".equals(targetView)){
+            if(!"promoUserHome".equals(targetView)){
                 modelAndView.addObject("promoSearch",new PromoSearchRequest());
+                if(",Business".equals(validatedAccount.getType())){
+                    List<Promotions> promotionsList= accountService.getPromotionsForAccount(validatedAccount.getId());
+
+                    modelAndView.addObject("accountPromotionList",promotionsList);
+                }
                // promotionService.getRunningPromotions(promoSearchRequest);
             }
              return modelAndView;
@@ -121,5 +132,6 @@ public class ProfileController {
         System.out.println("Welcome");
         return "home";
     }
+
 
 }

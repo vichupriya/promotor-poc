@@ -15,45 +15,84 @@
   <title>Promo</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  a {
+    color: rebeccapurple;
+
+  }
+</style>
 
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script>
-
-
-  </script>
-  <style>
-
-
-
-  </style>
 </head>
 <body>
 
-<div id="section2" class="container-fluid bg-2 text-center">
 
-</div>
+<!-- Footer -->
 
-<!-- Third Container (Grid) -->
-<div id="section3" class="container-fluid bg-3 text-center">
-  <h3 class="margin"></h3><br>
-  <div class="row">
-    <div class="col-sm-4">
+<!--Footer-->
+<footer id="promoFooter" class="page-footer font-small stylish-color-dark pt-4 mt-4" style="background-color: orange">
 
-    </div>
-    <div class="col-sm-4">
+  <!--Footer Links-->
+  <div class="container text-center text-md-left" >
+    <div class="row" >
 
-    </div>
-    <div class="col-sm-4">
+      <!--First column-->
 
+      <!--/.First column-->
+
+
+
+      <!--Second column-->
+      <div class="col-md-2 mx-auto" >
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Company</a></li>
+          <li><a href="#!">About Promo App</a></li>
+
+        </ul>
+      </div>
+      <!--/.Second column-->
+
+           <!--Third column-->
+      <div class="col-md-2 mx-auto">
+
+        <ul class="list-unstyled">
+          <li><a href="#!">Work with Promo App</a></li>
+          <li><a href="#!">Run a Promo Deal</a></li>
+
+        </ul>
+      </div>
+      <!--/.Third column-->
+
+      <!--Fourth column-->
+      <div class="col-md-2 mx-auto">
+
+        <ul class="list-unstyled">
+          <li><a href="#!">More</a></li>
+          <li><a href="#!">Customer Support</a></li>
+
+        </ul>
+      </div>
+      <!--/.Fourth column-->
     </div>
   </div>
-</div>
-<!-- Footer -->
-<footer class="container-fluid bg-4 text-center">
+  <!--/.Footer Links-->
+
+
+
+  <!--Copyright-->
+  <div class="footer-copyright py-3 text-center">
+    <div class="container-fluid">
+      <span style="color: white">
+      © 2018 Promo Inc. All Rights Reserved <a href=""> Terms of Use</a><a href=""> Privacy Statement Licenses</a>
+      </span>
+    </div>
+  </div>
+  <!--/.Copyright-->
 
 </footer>
+<!--/.Footer-->
+
 
 </body>
 </html>

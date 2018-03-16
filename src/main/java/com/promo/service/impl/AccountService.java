@@ -2,6 +2,7 @@ package com.promo.service.impl;
 
 import com.promo.bean.Account;
 import com.promo.bean.Address;
+import com.promo.bean.Promotions;
 import com.promo.bean.geo.GeoResult;
 import com.promo.bean.geo.Location;
 import com.promo.service.IAccountService;
@@ -17,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -89,5 +92,22 @@ public class AccountService implements IAccountService {
             return null;//"error";
         }
         return account;//"promoUserHome";
+    }
+
+    @Override
+    public List<Promotions> getPromotionsForAccount(long accountId) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("acccount.promo.lookup.url") + "/" + accountId).build();
+
+
+            ResponseEntity<List> loginResponseEntity = restTemplate.getForEntity(uriComponents.toString(), List.class);
+            return loginResponseEntity.getBody();
+        } catch (HttpClientErrorException httpException) {
+
+        } catch (Exception ex) {
+
+        }
+        return  new ArrayList<>();
     }
 }
