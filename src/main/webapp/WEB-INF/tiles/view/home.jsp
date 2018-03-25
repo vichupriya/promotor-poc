@@ -27,6 +27,7 @@
 <body>
 <script>
     $( document ).ready(function() {
+        $('#searchInput').hide();
         $( "#guestLogin" ).click(function() {
             $( "#loginForm" ).submit();
         });

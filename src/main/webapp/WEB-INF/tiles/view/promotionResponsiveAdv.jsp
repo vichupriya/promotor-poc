@@ -19,8 +19,8 @@
 <meta name="description" content="">
 <title>Home</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="/js/promoloader.js"></script>
 <script src="/js/utility.js"></script>
 
@@ -35,6 +35,18 @@
 #searchResultContainer{
     height:auto;
 }
+carbonads {
+    position: static;
+    display: block;
+    max-width: 400px;
+    padding: 15px 15px 15px 160px;
+    margin: 2rem 0;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    background-color: rgba(0,0,0,.05);
+}
 body {
     color: #555;
     font-family: Avenir Next,Calibri,Helvetica,Roboto,sans-serif;
@@ -42,34 +54,8 @@ body {
     font-weight: 400;
     line-height: 1.6;
 }
-h1, h2, h3,  h5 {
-    margin: 0;
-    margin-bottom: .5em;
-    padding: 0;
-    color: #222;
-    font-size: 25px;
-    font-weight: 400;
-    line-height: 1.25;
-}
 
-h4 {
-    margin: 0;
-    margin-bottom: .5em;
-    padding: 0;
-    color: rebeccapurple;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.25;
-}
-h6 {
-    margin: 0;
-    margin-bottom: .5em;
-    padding: 0;
-    color: #222;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.25;
-}
+
 
 .code-attached-copy .button {
     display: inline-block;
@@ -90,29 +76,8 @@ h6 {
     border: solid;
 
 }
-svg.icon {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    font-style: normal;
-    vertical-align: top;-align: top;
-}
-.offer-redemption-content {
-    margin: 0 auto 1em;
-    text-align: center;
-}
-        /* General sizing */
-        ul.dropdown-lr {
-            width: 150px;
-        }
 
-        /* mobile fix */
-        @media (max-width: 768px) {
 
-            }
-        .dropdown-lr label {
-            color: #eee;
-        }
 .modal-close, .modal-header .close {
     z-index: 18;
     display: block;
@@ -149,15 +114,7 @@ svg.icon {
         #searchInputSection{
             padding: 5px;
         }
-        #map{
 
-
-            height: 550px;
-            width: auto;
-            overflow: hidden;
-
-
-        }
 
     #noPromoAlert {
         position: fixed;
@@ -165,49 +122,15 @@ svg.icon {
         left: 50%;
         transform: translate(-50%, -50%);
     }
-        #searchWithfilterBtn{
-            width: 70px;
-            height:30px;
-            align-content: center;
-        }
-   #searchPanel{
-       background-color: orange;
-       padding: 5px;
-
-       height: 40px;
-       width: auto;
-   }
-     #promotype{
-
-         border-color: rebeccapurple;
-         border-style: solid;
-         border-width: 1px;
 
 
-     }
-       #btnPanel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
-/*Business Card Css */
-.business-card {
-    border: 1px solid #cccccc;
-    background: #f8f8f8;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
 
-}
 .profile-img {
     height: 120px;
     background: white;
 }
-.job {
-    color: #666666;
-    font-size: 17px;
-}
+
 .mail {
     font-size: 16px;
 }
@@ -229,10 +152,19 @@ svg.icon {
    }
 
 }
+#map{
+
+
+    height: 550px;
+
+
+
+}
+
 #cardContainer{
-    background-color: lightblue;
-    height: 150px;
-    width: 400px;
+    background-color: white;
+    height: auto;
+    width: auto;
     overflow-y: auto;
 }
     </style>
@@ -260,7 +192,6 @@ svg.icon {
             distanceSelected=$('#mileselect').find(":selected").text();
             getPromotions();
         })
-
         
     });
     function submitSearchFromModal(){
@@ -277,72 +208,9 @@ svg.icon {
    }
 </script>
 
-
 <div class="container-fluid" id="searchResultContainer">
 
-<div class="row" style="background-color: orange;padding:2px">
 
-
-
-        <div class="col-sm-2 col-md-2 col-lg-2 col-md-offset-4" id="btnPanel">
-            <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" id="promotype">Where do you want to go?
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#" class="small" data-value=-1" tabIndex="-1">
-                            <input type="checkbox" id="all"/>&nbsp;All
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="small" data-value="1" tabIndex="-1">
-                            <input type="checkbox" id="resturantOnly" />&nbsp;Resturant Only
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="small" data-value="2" tabIndex="-1">
-                            <input type="checkbox" id="bar"/>&nbsp;Bar
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="small" data-value="3" tabIndex="-1">
-                            <input type="checkbox" id="sportsBar"/>&nbsp;Sports Bar
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="small" data-value="4" tabIndex="-1">
-                            <input type="checkbox" id="pubtavern"/>&nbsp;Pub/Tavern
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#" class="small" data-value="5" tabIndex="-1">
-                            <input type="checkbox" id="microbrew"/>&nbsp;MicroBrew
-                        </a>
-                    </li>
-
-                    <li>
-
-                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <button type="button" id="searchWithfilterBtn" class="btn btn-info" >Apply</button>
-
-                    </li>
-                </ul>
-            </div>
-            <select class="form-control" id="mileselect" style="font-size: 12px;background-color: orange;width:100px;color: white">
-                <option>How Far?</option>
-                <option>With in blocks of me</option>
-                <option>1 to 2 Miles</option>
-                <option>2 to 5 Miles</option>
-                <option>More Than 5 Miles</option>
-            </select>
-        </div>
-
-
-
-
-
-
-</div>
     <div class="row">
         <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
         <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
@@ -354,10 +222,17 @@ svg.icon {
 
     </div>
     <div class="row" >
-        <div class="col-sm-3" style="" id="cardContainer"></div>
-        <div class="clearfix visible-xs-block"></div>
-    <div class="col-sm-6" ><div id="map"></div></div>
-      <div class="col-sm-4" style="">.col-sm-3</div>
+        <div class="col-sm-3 col-md-5 col-lg-3" style="" >
+            <div class="container" >
+            <div class="list-group" id="cardContainer">
+
+                </div>
+            </div>
+
+        </div>
+
+    <div class="col-sm-6 col-md-7 col-lg-7" id="map"></div>
+
   </div>
   </div>
 

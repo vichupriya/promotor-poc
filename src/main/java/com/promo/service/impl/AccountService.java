@@ -104,9 +104,9 @@ public class AccountService implements IAccountService {
             ResponseEntity<List> loginResponseEntity = restTemplate.getForEntity(uriComponents.toString(), List.class);
             return loginResponseEntity.getBody();
         } catch (HttpClientErrorException httpException) {
-
+            httpException.printStackTrace();
         } catch (Exception ex) {
-
+                ex.printStackTrace();
         }
         return  new ArrayList<>();
     }

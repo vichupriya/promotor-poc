@@ -15,12 +15,12 @@
   <title>Promo</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  a {
-    color: rebeccapurple;
+  <style>
+    a {
+      color: rebeccapurple;
 
-  }
-</style>
+    }
+  </style>
 
 
 </head>
@@ -53,7 +53,7 @@
       </div>
       <!--/.Second column-->
 
-           <!--Third column-->
+      <!--Third column-->
       <div class="col-md-2 mx-auto">
 
         <ul class="list-unstyled">

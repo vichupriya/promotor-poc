@@ -22,7 +22,7 @@
           getCurrentDateTimeAsString()
           $('#startTime').val(localDateTimeString);
           $('#endTime').val(localDateTimeString);
-
+		  $('#searchInput').hide();
 
       });
       function setStartTime(){
@@ -140,7 +140,8 @@
 											  <label class="control-label " for="message">
 												  Description
 											  </label>
-											  <form:textarea path="promotionDescription" class="form-control" cols="40" id="message" name="message" rows="10"></form:textarea>
+											  <form:textarea path="promotionDescription" class="form-control" cols="40" id="message" name="message" rows="10" ></form:textarea>
+
 										  </div>
 										  <div class="form-group ">
 											  <label class="control-label " >
