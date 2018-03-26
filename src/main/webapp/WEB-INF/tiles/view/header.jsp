@@ -68,6 +68,7 @@
 
     $(document).ready(function(){
 
+        $( "#logoutbtn").hide();
         $( "#navZipcodeSearchForm" ).submit(function( event ) {
             userZip= $("#zipCodeGloabalSearchText").val();
             searchTypeCode="SEARCH_IN_ZIPCODE";
@@ -105,7 +106,9 @@
           </div>
         </div>
         <div class="col-sm-4 col-md-4 col-lg-4" style="text-align: center"> <button class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/businessRegistration">SignUp</a></button>
-            <button class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/signin">Login</a></button></div>   </div>
+            <button id="loginbtn" class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/signin" id="loginlink">Login</a></button>
+            <button id="logoutbtn" class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/signout" id="logoutlink">LogOut</a></button></div>   </div>
+
     </div>
 
 <nav class="navbar navbar-inverse" id="searchInput">

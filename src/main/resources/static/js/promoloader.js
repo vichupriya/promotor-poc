@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var barIcon ='';
-var fineDineIcon = 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/72/map-marker-icon.png';
-var sportsBarIcon = 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Azure-icon.png';
-var pubIcon = 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Chartreuse-icon.png';
-var microBrewIcon = 'http://www.iconsplace.com/icons/preview/orange/marker-256.png';
-var barIcon ='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjb28TwCK1MAhP5abin3xPJyXgxr5xYOVHIog_uADc_1zcraBTqg';
-var resturantOnlyIcon = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjb28TwCK1MAhP5abin3xPJyXgxr5xYOVHIog_uADc_1zcraBTqg';
+
 var localDateTimeString;
 var withInBlockStr = "With in blocks of me";
 var onetoTwoMiles = "1 to 2 Miles";
 var twotoFiveMiles = "2 to 5 miles";
 var moreThanFiveMiles = "More Than 5 Miles";
 var markerArray=[];
+var dataArray=[];
 var Popup;
 var userZip="";
 var distanceSelected="More Than 5 Miles";
@@ -84,9 +79,7 @@ var printContent;
         });
 
 
-     google.maps.event.addListener(map, "rightclick", function(event) {
-        // $("#mydiv").show();
-     });
+
      $.getScript( "/js/markerlabel.js" )
          .done(function( script, textStatus ) {
              console.log( textStatus );
@@ -161,6 +154,26 @@ function getPromotions(){
     });
 
 }
+function displayPromoInfoModal(promoModalContent,mailToContent){
+
+    $('#promoBusinessInfo').empty();
+
+    $('#promoBusinessInfo').append(promoModalContent);
+    $("#promoEmailLink").attr("href", mailToContent);
+    $("#promoInfoModal").modal('show');
+}
+function preparePromoModal(modalData){
+
+    //var modalContent =promotions.businessName+":"+promotions.formattedAddress+":"+promotions.promotionDescription+":"+promotions.promotionCode;
+    modalContent = modalData.split(":");
+    var promoCode ='<div class="offer-code">Code :'+modalContent[3]+'</div>';
+    var promoModalContent ='<div class="offer-redemption-content"><h1>'+modalContent[0]+'</h1>' +
+        ' <span >'+modalContent[1]+'</span><br><em id="promoDesc">'+modalContent[2]+'</em >'+promoCode+'</div><div id="print-view">';
+    printContent = promoModalContent;
+    var mailBody = modalContent[2]+'\n'+"Code :"+modalContent[3]+'\n'+modalContent[0]+'\n'+modalContent[1]+'\n\n';
+    var mailToContent = "mailto:?subject=Look At The Offer Inside&body="+encodeURIComponent(mailBody);
+    displayPromoInfoModal(promoModalContent,mailToContent);
+}
 function processPromotions(data){
 
     $("#noPromoAlert").hide();
@@ -196,22 +209,18 @@ function processPromotions(data){
   labelClass: "markerlabels",
             labelStyle: {opacity: 0.75, visibility: false},
             labelContent: markerLabel,
-*/
+
+
+        var promoCode ='<div class="offer-code">Code :'+promotions.promotionCode+'</div>';
+        var promoModalContent ='<div class="offer-redemption-content"><h1>'+promotions.businessName+'</h1>' +
+            ' <span >'+promotions.formattedAddress+'</span><br><em id="promoDesc">'+promotions.promotionDescription+'</em >'+promoCode+'</div><div id="print-view">';
+        printContent = promoModalContent;
+        var mailBody = promotions.promotionDescription+'\n'+"Code :"+promotions.promotionCode+'\n'+promotions.businessName+'\n'+promotions.formattedAddress+'\n\n';
+        var mailToContent = "mailto:?subject=Look At The Offer Inside&body="+encodeURIComponent(mailBody);*/
+        var modalData =promotions.businessName+":"+promotions.formattedAddress+":"+promotions.promotionDescription+":"+promotions.promotionCode;
         google.maps.event.addListener(marker, 'click', function () {
 
-
-            var $modal = $('#promoInfoModal');
-
-// Show loader & then get content when modal is shown
-
-            var promoCode ='<div class="offer-code">Code :'+promotions.promotionCode+'</div>';
-             var promoBusinessContent ='<div class="offer-redemption-content"><h1>'+promotions.businessName+'</h1>' +
-                ' <span >'+promotions.formattedAddress+'</span><br><em id="promoDesc">'+promotions.promotionDescription+'</em >'+promoCode+'</div><div id="print-view">';
-            printContent = promoBusinessContent;
-            $('#promoBusinessInfo').empty();
-
-            $('#promoBusinessInfo').append(promoBusinessContent);
-            $("#promoInfoModal").modal('show');
+          preparePromoModal(modalData);
 
 
         });
@@ -221,13 +230,14 @@ function processPromotions(data){
         }
 
 
-        var cardContent ='';
+
     var miles = promotions.miles;
     if(typeof miles === "undefined" || miles===null){
         miles = '';
     }else{
         miles =miles+ ' Away';
     }
+        var data =
 
         cardContent =' <div class="media">' +
         '<div class="media-left media-middle">' +
@@ -238,11 +248,13 @@ function processPromotions(data){
         '      <h2><small>'+addr[1]+addr[2]+',<span class="badge">'+miles+'</span></small></h2>' +
         '      <span class="label label-danger">'+promotions.promotionDescription+'</span>' +
         '      Used By <span class="badge">2</span>' +
-        '      <div style="text-align:right"> <button type="button" class="btn btn-primary">Get Promo Code</button></div>' +
+        '      <div style="text-align:right" class="promodiv" > <button type="button" id= "promoInfoBtn"  class="btn btn-primary" value="'+modalData+'">More Info</button></div>' +
         '     ' +
         '    </div>' +
         '  </div><hr>';
 
+        var hiddenContent = '<input id="'+promotions.promotionId+'" type="hidden" value="'+data+'">';
+       // $('#cardContainer').append(hiddenContent);
         $('#cardContainer').append(cardContent);
         bounds.extend(latlng);
 

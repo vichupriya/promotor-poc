@@ -19,6 +19,9 @@
   <script>
       var localDateTimeString;
       $( document ).ready(function() {
+
+          $( "#logoutbtn").show();
+          $( "#loginbtn").hide();
           getCurrentDateTimeAsString()
           $('#startTime').val(localDateTimeString);
           $('#endTime').val(localDateTimeString);

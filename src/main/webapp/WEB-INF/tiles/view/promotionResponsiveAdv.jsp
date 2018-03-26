@@ -177,13 +177,19 @@ body {
     var lng;
    // watchUserPosition();
     $( document ).ready(function() {
-        $("#noPromoAlert").hide();
 
-    /*    $("input[type='checkbox']").on('change', function () {
-            getPromotions();
+        $( "body" ).click(function( event ) {
+            var target = $( event.target );
+            if ( target.is( "button" ) ) {
+                var promotion = target.attr("value");
+                preparePromoModal(promotion);
+            }
+
 
         });
-        */
+        $("#noPromoAlert").hide();
+
+
         $('#mileselect').on('change', function() {
             distanceSelected=$('#mileselect').find(":selected").text();
             getPromotions();
@@ -192,6 +198,12 @@ body {
             distanceSelected=$('#mileselect').find(":selected").text();
             getPromotions();
         })
+        $("#all").change(function ()
+            {
+                $('input:checkbox').not(this).prop('checked', this.checked);
+
+            }
+        );
         
     });
     function submitSearchFromModal(){
@@ -206,6 +218,14 @@ body {
        printView.innerHTML = printContent;
        window.print();
    }
+
+ /*  function promoCardEvent(){
+       var promoId= $("#promoInfoBtn").val();
+
+       alert(dataArray[promoId]);
+       var promoContents= dataArray[promoId].split(":");
+       displayPromoInfoModal(promoContents[0],promoContents[1]);
+   }*/
 </script>
 
 <div class="container-fluid" id="searchResultContainer">
@@ -288,7 +308,7 @@ body {
             <div class="modal-footer" id="promoActions" style="text-align: center">
                 <button type="button" class="btn btn-warning" >Download</button>
                 <button type="button" class="btn btn-warning" onclick="printPromo()">Print</button>
-                <button type="button" class="btn btn-warning" > <div class="mail"><a href="mailto:">Email</a> </div></button>
+                <button type="button" class="btn btn-warning" > <div class="mail"><a href="mailto:" id="promoEmailLink">Email</a> </div></button>
 
             </div>
         </div>

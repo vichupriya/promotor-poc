@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.promo.service.IPromotionService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @SessionAttributes("account")
@@ -36,13 +39,21 @@ public class ProfileController {
         return modelAndView;//new ModelAndView("home","individualAccount",new Account());
     }
     @RequestMapping(value = "/signin")
-    public ModelAndView singinHome() {
+    public ModelAndView singinHome(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        httpSession.invalidate();
         ModelAndView modelAndView = new ModelAndView("site.home");
         modelAndView.addObject("individualAccount", new Account());
         modelAndView.addObject("loginAccount", new Account());
         return modelAndView;//new ModelAndView("home","individualAccount",new Account());
     }
-
+    @RequestMapping(value = "/signout")
+    public ModelAndView sinout() {
+        ModelAndView modelAndView = new ModelAndView("site.home");
+        modelAndView.addObject("individualAccount", new Account());
+        modelAndView.addObject("loginAccount", new Account());
+        return modelAndView;//new ModelAndView("home","individualAccount",new Account());
+    }
 
     @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     public ModelAndView register(@ModelAttribute("individualAccount") Account account) {
