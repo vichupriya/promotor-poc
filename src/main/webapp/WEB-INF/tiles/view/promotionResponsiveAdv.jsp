@@ -19,7 +19,7 @@
 <meta name="description" content="">
 <title>Home</title>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="/js/promoloader.js"></script>
 <script src="/js/utility.js"></script>
@@ -134,11 +134,15 @@ body {
 .mail {
     font-size: 16px;
 }
+#print-view{
+    display:block;
+    visibility: hidden;
+}
 @media print{
 
     #print-view{
         display:block;
-
+        visibility: visible;
     }
 
     #searchResultContainer {
@@ -148,6 +152,9 @@ body {
         visibility:hidden;
     }
    #promoActions{
+       visibility:hidden;
+   }
+   #headerContainer{
        visibility:hidden;
    }
 
@@ -165,7 +172,8 @@ body {
     background-color: white;
     height: auto;
     width: auto;
-    overflow-y: auto;
+    overflow-y: scroll;
+
 }
     </style>
 
@@ -232,15 +240,16 @@ body {
 
 
     <div class="row">
-        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
-        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
-
-        <!-- Add the extra clearfix for only the required viewport -->
+        <!--   <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+           <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+   -->
+           <!-- Add the extra clearfix for only the required viewport -->
         <div class="clearfix visible-xs-block"></div>
 
-        <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+        <!--  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div> -->
 
     </div>
+
     <div class="row" >
         <div class="col-sm-3 col-md-5 col-lg-3" style="" >
             <div class="container" >
@@ -280,7 +289,7 @@ body {
 </div>
 <div id="noPromoAlert" class="alert alert-warning alert-dismissable fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong style="color: red">No Active Promotions Going On!</strong>
+    <strong style="color: red">No Active Promotions!</strong>
 </div>
 <div class="modal fade" id="promoInfoModal" role="dialog">
     <div class="modal-dialog">
@@ -292,7 +301,7 @@ body {
             <div class="modal-header"><span class="modal-close js-close" data-dismiss="modal" aria-label="Close"><svg class="icon icon-close"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-close"></use></svg></span></div>
             <div class="modal-body">
 
-                <div class="business-card" style="background-color: white;border: 0px">
+                <div class="business-card" style="background-color: white;border: 0px" id="promoDetailModal">
                     <div class="media">
                         <div class="media-left">
                             <img class="media-object img-circle profile-img" src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png">
@@ -306,7 +315,7 @@ body {
                 </div>
             </div>
             <div class="modal-footer" id="promoActions" style="text-align: center">
-                <button type="button" class="btn btn-warning" >Download</button>
+                <button type="button" class="btn btn-warning" onclick="takeScreenShot()">Download</button>
                 <button type="button" class="btn btn-warning" onclick="printPromo()">Print</button>
                 <button type="button" class="btn btn-warning" > <div class="mail"><a href="mailto:" id="promoEmailLink">Email</a> </div></button>
 

@@ -19,23 +19,59 @@
   <script>
       var localDateTimeString;
       $( document ).ready(function() {
+          var date = new Date();
+          var month = date.getMonth()+1;
+          var monthValue = (month<=9)?"0"+month:month;
+          var day =  date.getDate();
+          var dayValue = (day<=9)?"0"+day:day;
+          var hours =  date.getHours();
+          var hoursValue = (hours<=9)?"0"+hours:hours;
 
+          var mints =  date.getMinutes();
+          var mintsValue = (mints<=9)?"0"+mints:mints;
+          var defaultStartTime  = date.getFullYear()+"-"+monthValue+"-"+dayValue+"T"+hoursValue+":"+mintsValue+":00";
+          $("#starttimecontrol").val(defaultStartTime);
+          $("#startTime").val(new Date(defaultStartTime).toISOString());
+		  //$("#starttimecontrol").val(defaultStartTime);
+          $("#promoFilterInput").on("keyup", function() {
+              var value = $(this).val().toLowerCase();
+              $("#promotions tr").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+          });
+          $('.edit_promo').click(function () {
+
+              var promoDesc = $(this).closest("tr").find('td:eq(1)').text();
+              var promoId = $(this).closest("tr").find('td:eq(0)').text();
+              var startDate  = $(this).closest("tr").find('td:eq(2)').text();
+              var endDate = $(this).closest("tr").find('td:eq(3)').text();
+
+              $("#promoDesc").val($.trim(promoDesc));
+              $("#promoIdHidden").val($.trim(promoId));
+
+             $('#myTab a[href="#createPromo"]').tab('show');
+
+
+          });
           $( "#logoutbtn").show();
           $( "#loginbtn").hide();
-          getCurrentDateTimeAsString()
-          $('#startTime').val(localDateTimeString);
-          $('#endTime').val(localDateTimeString);
+
 		  $('#searchInput').hide();
 
       });
+
       function setStartTime(){
 
           var startDateTime = new Date($("#starttimecontrol").val());
-          $("#startTime").val(startDateTime.toISOString());
+         /* $("#startTime").val(startDateTime.toISOString());*/
+          $("#startTime").val(getFormattedDate(startDateTime));
+
       }
+
       function setEndTime(){
           var endDateTime = new Date($("#endtimecontrol").val());
-          $("#endTime").val(endDateTime.toISOString());
+        //  $("#endTime").val(endDateTime.toISOString());
+          $("#endTime").val(getFormattedDate(endDateTime));
       }
   </script>
   <hr>
@@ -50,8 +86,8 @@
 			  <ul class="list-group">
 				  <li class="list-group-item text-muted">Profile</li>
 				  <li class="list-group-item text-right"><span class="pull-left"><strong>Joined</strong></span> 2.13.2014</li>
-				  <li class="list-group-item text-right"><span class="pull-left"><strong>Last seen</strong></span> Yesterday</li>
-				  <li class="list-group-item text-right"><span class="pull-left"><strong>Real name</strong></span> Joseph Doe</li>
+				  <li class="list-group-item text-right"><span class="pull-left"><strong>Business</strong></span> <c:out value="${account.businessName}"/></li>
+				  <li class="list-group-item text-right"><span class="pull-left"><strong>Logined As</strong></span><c:out value="${account.userName}"/></li>
 
 			  </ul>
 
@@ -61,13 +97,15 @@
 
 			  <ul class="nav nav-tabs" id="myTab">
 				  <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-				  <li><a href="#messages" data-toggle="tab">Create Promotion</a></li>
+				  <li><a href="#createPromo" data-toggle="tab">Create Promotion</a></li>
 				  <li><a href="#settings" data-toggle="tab">Settings</a></li>
 			  </ul>
 
 			  <div class="tab-content" style="color:black">
 				  <div class="tab-pane active" id="home">
 					  <div class="table-responsive">
+						  <p>Type something below to search for promotions:</p>
+						  <input class="form-control" id="promoFilterInput" type="text" placeholder="Search..">
 						  <table class="table table-striped">
 							  <thead>
 							  <tr>
@@ -82,10 +120,10 @@
 							  <c:forEach items="${accountPromotionList}" var="promotion">
 								  <c:out value="${pr.name}"/>
 								  <c:out value="${userForm.address}"/>
-								  <tbody id="items">
+								  <tbody id="promotions">
 								  <tr>
 									  <td>
-										 1
+										  <c:out value="${promotion.promotionId}"/>
 									  </td>
 									  <td>
 										  <c:out value="${promotion.promotionDescription}"/>
@@ -100,7 +138,7 @@
 										 11
 									  </td>
 									  <td>
-										  <input type="button" value="Edit">
+										  <input class="edit_promo" type="button" value="Edit">
 									  </td>
 
 								  </tr>
@@ -122,16 +160,12 @@
 
 
 				  </div><!--/tab-pane-->
-				  <div class="tab-pane" id="messages">
+				  <div class="tab-pane" id="createPromo">
 
 					  <h2></h2>
 
 					  <form:form method="post" action="/createPromotion" modelAttribute="promotion">
-						  <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
-						  <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
 
-						  <!-- Inline CSS based on choices in "Settings" tab -->
-						  <style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}</style>
 
 						  <!-- HTML Form (wrapped in a .bootstrap-iso div) -->
 						  <div class="bootstrap-iso">
@@ -140,10 +174,15 @@
 									  <div class="col-md-6 col-sm-6 col-xs-12">
 
 										  <div class="form-group ">
+											  <form:input path="promotionId" type="hidden" id="promoIdHidden"></form:input>
+											  <label class="control-label " for="promoTitle">
+												  Title
+											  </label>
+											  <input type="text" id="promoTitle">
 											  <label class="control-label " for="message">
 												  Description
 											  </label>
-											  <form:textarea path="promotionDescription" class="form-control" cols="40" id="message" name="message" rows="10" ></form:textarea>
+											  <form:textarea path="promotionDescription" class="form-control" cols="40" id="promoDesc" name="message" rows="5" ></form:textarea>
 
 										  </div>
 										  <div class="form-group ">
@@ -165,6 +204,7 @@
 														  <form:input path="endTime" class="form-control" type="hidden" value="" id="endTime"></form:input>
 													  </div>
 												  </div>
+
 											  </div>
 										  </div>
 
@@ -187,79 +227,67 @@
 
 
 					  <hr>
-					  <form class="form" action="##" method="post" id="registrationForm">
-						  <div class="form-group">
+					  <form:form method="post" action="/account" commandName="individualAccount" >
+					  <form:input path="id" type="hidden"></form:input>
+						  <form:hidden path="type" />
+						  <input id="type" name="type" type="hidden" value="Business"/>
+						  <div class="container" style="width:70%">
+							  <div class="row vertical-center-row" >
 
-							  <div class="col-xs-6">
-								  <label for="first_name"><h4>First name</h4></label>
-								  <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
-							  </div>
-						  </div>
-						  <div class="form-group">
+								  <div class="panel-body">
 
-							  <div class="col-xs-6">
-								  <label for="last_name"><h4>Last name</h4></label>
-								  <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-							  </div>
-						  </div>
+									  <div class="col-md-12 col-sm-12">
 
-						  <div class="form-group">
 
-							  <div class="col-xs-6">
-								  <label for="phone"><h4>Phone</h4></label>
-								  <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
-							  </div>
-						  </div>
 
-						  <div class="form-group">
-							  <div class="col-xs-6">
-								  <label for="mobile"><h4>Mobile</h4></label>
-								  <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-							  </div>
-						  </div>
-						  <div class="form-group">
+										  <div class="form-group col-md-6 col-sm-6">
+											  <label for="mobile">Contact#*</label>
+											  <form:input path="contectPhone"  type="text" class="form-control input-sm" id="mobile" placeholder=""></form:input>
+										  </div>
+										  <div class="form-group col-md-6 col-sm-6">
+											  <label for="email">Email</label>
+											  <form:input path ="emailAddress" type="email" class="form-control input-sm" id="email" placeholder="" ></form:input>
+										  </div>
 
-							  <div class="col-xs-6">
-								  <label for="email"><h4>Email</h4></label>
-								  <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-							  </div>
-						  </div>
-						  <div class="form-group">
 
-							  <div class="col-xs-6">
-								  <label for="email"><h4>Location</h4></label>
-								  <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
-							  </div>
-						  </div>
-						  <div class="form-group">
 
-							  <div class="col-xs-6">
-								  <label for="password"><h4>Password</h4></label>
-								  <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
-							  </div>
-						  </div>
-						  <div class="form-group">
+									  <div class="form-group col-md-6 col-sm-6">
+										  <label for="userName">UserName*</label>
+										  <form:input path="userName" pathname="userName" id="userName" class="form-control input-sm" type="text"/>
 
-							  <div class="col-xs-6">
-								  <label for="password2"><h4>Verify</h4></label>
-								  <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+									  </div>
+									  <div class="form-group col-md-6 col-sm-6">
+										  <label for="accountPassword">Password*</label>
+										  <form:input path="accountPassword" name="password" id="accountPassword" class="form-control input-sm" placeholder="Password" type="password"/>
+									  </div>
+									  <div class="form-group col-md-6 col-sm-6">
+										  <label for="rpassword">Retype Password*</label>
+										  <input type="password" class="form-control input-sm" id="rpassword" placeholder="">
+									  </div>
+
+
+									  <div class="form-group col-md-3 col-sm-3">
+										  <label for="photo">BusinessLogo*</label>
+										  <input type="file" id="photo">
+									  </div>
+									  <div class="col-md-6 col-sm-6">
+										  <input type="submit" class="btn btn-primary" value="Submit"/>
+
+									  </div>
+								  </div>
 							  </div>
+
+
 						  </div>
-						  <div class="form-group">
-							  <div class="col-xs-12">
-								  <br>
-								  <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-								  <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-							  </div>
-						  </div>
-					  </form>
+					  </form:form>
+
 				  </div>
 
 			  </div><!--/tab-pane-->
 		  </div><!--/tab-content-->
 
 	  </div><!--/col-9-->
-  </div><!--/row-->
+  </div></div><!--/row-->
 
   </body>
 </html>

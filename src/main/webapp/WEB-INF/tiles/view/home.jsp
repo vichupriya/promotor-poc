@@ -7,6 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +29,7 @@
 <body>
 <script>
     $( document ).ready(function() {
+        $("#globalSearchDiv").hide();
         $('#searchInput').hide();
         $( "#guestLogin" ).click(function() {
             $( "#loginForm" ).submit();
@@ -86,8 +89,9 @@
                       </table>
           <div class="panel-footer" style="color:black">Not Registered? <a href="#myUser" data-toggle="modal" class="lnk">Register here</a></div>
           <button type="button" class="btn btn-link" id="guestLogin">Continue As Guest</button>
-          <div class="panel-footer" style="color:black">Promote Your Business? <a href="${contextPath}/businessRegistration" data-toggle="modal" class="lnk">Register here</a></div>
-
+          <form id="businessRegForm" action="businessRegistration">
+          <div class="panel-footer" style="color:black">Promote Your Business? <button type="submit" class="btn btn-link" >Register here</button></div>
+          </form>
         </div>
       </div>
     </div>
@@ -210,7 +214,7 @@
             <div class="panel-body">
               <form role="form">
                 <div class="form-group">
-                  <label class="col-sm-10 control-label" for="textinput">Business Details</label>
+                  <label class="col-sm-10 control-label" for="businessname">Business Details</label>
                 </div>
                 <div class="form-group">
                   <input name="businessname" id="businessname" class="form-control input-sm" placeholder="Business Name" type="text">
@@ -299,7 +303,7 @@
                 </div>
                 <!-- Contact Details -->
                 <div class="form-group">
-                  <label class="col-sm-10 control-label" for="textinput">Contact Details</label>
+                  <label class="col-sm-10 control-label" for="contact_name">Contact Details</label>
                 </div>
                 <!-- Contact Person Name -->
                 <div class="form-group">

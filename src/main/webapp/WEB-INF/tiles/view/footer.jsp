@@ -20,6 +20,13 @@
       color: rebeccapurple;
 
     }
+    #promoFooter {
+      position:absolute;
+      bottom:0;
+      width:100%;
+      height:125px;   /* Height of the footer */
+      background:#6cf;
+    }
   </style>
 
 

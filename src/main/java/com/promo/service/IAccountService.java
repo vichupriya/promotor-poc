@@ -9,5 +9,6 @@ public interface IAccountService {
     public String register(Account account);
     public Account authenticateUser(Account account);
     public List<Promotions> getPromotionsForAccount(long accountId);
+    public String updateAccount(Account account);
 
 }

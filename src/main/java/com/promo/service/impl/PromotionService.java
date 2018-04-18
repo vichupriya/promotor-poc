@@ -32,17 +32,15 @@ public class PromotionService implements IPromotionService{
     @Autowired
     Environment environment;
     @Override
-    public String postPromotion(Promotions promotions,Account account) {
+    public String createPromotion(Promotions promotions, Account account) {
 
         if(account !=null){
             promotions.setBusinessID(account.getId());
             promotions.setActive(true);
-            promotions.setPromotionCode(System.currentTimeMillis());
-
+           // promotions.setPromotionCode(System.currentTimeMillis());
             promotions.setOwnerLat(Double.valueOf(account.getLocation().getLat()));
             promotions.setOwnerLng(Double.valueOf(account.getLocation().getLng() ));
             promotions.setFormattedAddress(account.getLocation().getFormattedAddress());
-           // promotions.setStartTimeAsDate(getFormattedDate(promotions.getStartTime()));
             promotions.setContactEmail(account.getEmailAddress());
             promotions.setBusinessName(account.getBusinessName());
             promotions.setContactPhone(account.getContectPhone());
@@ -55,6 +53,15 @@ public class PromotionService implements IPromotionService{
         UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("promotion.url")+"/").build();
         HttpEntity<Promotions> registrationHttpEntity = new HttpEntity<Promotions>(promotions);
         ResponseEntity<String> regisrationResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.POST, registrationHttpEntity, String.class);
+        return regisrationResponseEntity.getBody();
+    }
+
+    @Override
+    public String updatePromotion(Promotions promotions) {
+        RestTemplate restTemplate = new RestTemplate();
+        UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("promotion.url")+"/").build();
+        HttpEntity<Promotions> registrationHttpEntity = new HttpEntity<Promotions>(promotions);
+        ResponseEntity<String> regisrationResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.PUT, registrationHttpEntity, String.class);
         return regisrationResponseEntity.getBody();
     }
 

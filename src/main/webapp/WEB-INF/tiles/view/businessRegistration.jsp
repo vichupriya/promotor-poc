@@ -8,7 +8,7 @@
     <title>Registration Form</title>
 <script>
     $( document ).ready(function() {
-
+        $("#globalSearchDiv").hide();
         $('#searchInput').hide();
 
     });
@@ -35,14 +35,13 @@
                     <label for="businessType">Type*	</label>
                     <form:select path ="" id="businessType" name="businessType" class="form-control">
                          <option value="-1">Select</option>
-                          <option value="1">Bar Only</option>
-                          <option value="2">Restaurant Only</option>
+						<option value="1">Restaurant Only</option>
+						<option value="2">Bar</option>
                           <option value="3">Sports Bar</option>
-						 <option value="4">Pub</option>
-                          <option value="10">Pub/Tavern</option>
-                           <option value="11">Pub/Lounge</option>
-                           <option value="6">MicroBrew</option>
-                           <option value="7">Diner</option>
+						   <option value="4">Pub/Tavern</option>
+
+                           <option value="5">MicroBrew</option>
+
 
                       </form:select>
 		</div>

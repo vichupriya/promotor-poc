@@ -6,6 +6,7 @@ import com.promo.bean.search.PromoSearchRequest;
 import java.util.List;
 
 public interface IPromotionService {
-    public String postPromotion(Promotions promotions,Account account);
+    public String createPromotion(Promotions promotions, Account account);
+    public String updatePromotion(Promotions promotions);
     public List<Promotions> getRunningPromotions(PromoSearchRequest promoSearchRequest);
 }

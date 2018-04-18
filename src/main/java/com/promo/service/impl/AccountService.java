@@ -99,8 +99,6 @@ public class AccountService implements IAccountService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(environment.getProperty("acccount.promo.lookup.url") + "/" + accountId).build();
-
-
             ResponseEntity<List> loginResponseEntity = restTemplate.getForEntity(uriComponents.toString(), List.class);
             return loginResponseEntity.getBody();
         } catch (HttpClientErrorException httpException) {
@@ -109,5 +107,15 @@ public class AccountService implements IAccountService {
                 ex.printStackTrace();
         }
         return  new ArrayList<>();
+    }
+
+    @Override
+    public String updateAccount(Account account) {
+        String url =environment.getProperty("account.url");
+        RestTemplate restTemplate = new RestTemplate();
+        UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(url).build();
+        HttpEntity<Account> registrationHttpEntity = new HttpEntity<Account>(account);
+        ResponseEntity<String> regisrationResponseEntity = restTemplate.exchange(uriComponents.toString(), HttpMethod.PUT, registrationHttpEntity, String.class);
+        return regisrationResponseEntity.getBody();
     }
 }

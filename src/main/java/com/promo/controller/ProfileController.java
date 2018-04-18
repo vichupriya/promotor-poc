@@ -6,6 +6,7 @@ import com.promo.bean.Promotions;
 import com.promo.bean.geo.Location;
 import com.promo.bean.search.PromoSearchRequest;
 import com.promo.service.IAccountService;
+import com.promo.service.impl.AccountService;
 import com.promo.util.PromoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,18 @@ public class ProfileController {
             return modelAndView;
         }
     }
+@RequestMapping(value="/account",method=RequestMethod.POST)
+public ModelAndView updateAccount(@ModelAttribute("individualAccount")Account account){
 
+        ModelAndView modelAndView= new ModelAndView("promoOwnerHome");
+         accountService.updateAccount(account) ;
+        modelAndView.addObject("promotion",new Promotions());
+        modelAndView.addObject("individualAccount",account);
+        modelAndView.addObject("promoSearch",new PromoSearchRequest());
+        List<Promotions> promotionsList= accountService.getPromotionsForAccount(account.getId());
+        modelAndView.addObject("accountPromotionList",promotionsList);
+        return modelAndView;
+}
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@ModelAttribute("loginAccount") Account account) {
         Account validatedAccount = null;
@@ -97,17 +109,17 @@ public class ProfileController {
         if(validatedAccount!=null &&  !StringUtils.isEmpty(validatedAccount.getUserName())){
 
             String accType =validatedAccount.getType();
-            targetView = (",Business".equalsIgnoreCase(accType))?"promotion":"promoSearchHome";
+            targetView = (",Business".equalsIgnoreCase(accType))?"promoOwnerHome":"promoSearchHome";
             ModelAndView modelAndView = new ModelAndView(targetView);
             modelAndView.addObject("account",validatedAccount);
-            if(!"promoUserHome".equals(targetView)){
+            if("promoOwnerHome".equals(targetView)){
+                modelAndView.addObject("promotion",new Promotions());
+                modelAndView.addObject("individualAccount",validatedAccount);
                 modelAndView.addObject("promoSearch",new PromoSearchRequest());
-                if(",Business".equals(validatedAccount.getType())){
-                    List<Promotions> promotionsList= accountService.getPromotionsForAccount(validatedAccount.getId());
+                List<Promotions> promotionsList= accountService.getPromotionsForAccount(validatedAccount.getId());
+                modelAndView.addObject("accountPromotionList",promotionsList);
 
-                    modelAndView.addObject("accountPromotionList",promotionsList);
-                }
-               // promotionService.getRunningPromotions(promoSearchRequest);
+
             }
              return modelAndView;
            

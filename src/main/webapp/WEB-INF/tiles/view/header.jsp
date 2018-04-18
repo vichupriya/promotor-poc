@@ -16,8 +16,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script>
 
@@ -61,6 +61,8 @@
 
 
     }
+
+
   </style>
 </head>
 <body>
@@ -69,16 +71,24 @@
     $(document).ready(function(){
 
         $( "#logoutbtn").hide();
+        $("#currentLoc").hide();
+
+
         $( "#navZipcodeSearchForm" ).submit(function( event ) {
             userZip= $("#zipCodeGloabalSearchText").val();
             searchTypeCode="SEARCH_IN_ZIPCODE";
             getPromotions();
             searchTypeCode="";
         })
+        $( "#currentLocMenuItem" ).click(function( event ) {
+            //$("#zipCodeGloabalSearchText").val("Current Location");
+            getPromotions();
 
+        })
 
 
     });
+
     function submitSearchInZipCode(){
         userZip= $("#zipCodeGloabalSearchText").val();
         searchTypeCode="SEARCH_IN_ZIPCODE";
@@ -88,22 +98,36 @@
 </script>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!-- Navbar -->
-<div class="container-fluid" style="background-color: orange">
+<div class="container-fluid" style="background-color: orange" id="headerContainer">
     <div class="row" style="padding: 5px">
         <div class="col-sm-4 col-md-4 col-lg-4" style="text-align: center">
-           <h1 style="color: white">PROMO</h1>
+            <h1 style="color: white"><a href="${contextPath}/">PROMO</a></h1>
            </div>
-        <div class="col-sm-2 col-md-4 col-lg-4" >
+        <div class="col-sm-2 col-md-4 col-lg-4" id="globalSearchDiv" >
+
              <div class="input-group" style="width: 250px">
+
             <input type="text" id="zipCodeGloabalSearchText" class="form-control" placeholder="Search in Zipcode" >
 
-            <div class="input-group-btn">
-              <button class="btn btn-default" type="button" id="btnZipSearch" onclick="submitSearchInZipCode()" style="border-style: solid;border-color: black">
-                <i class="glyphicon glyphicon-search" style="height: 23px"></i>
-              </button>
+            <div class="input-group-append" style="float: none">
+
+                <button class="btn btn-outline-secondary dropdown-toggle" style="background-color: skyblue"type="button" id="" onclick="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                </button>
+                <div class="dropdown-menu">
+
+                    <a class="dropdown-item" href="#"> <span class="glyphicon glyphicon-chevron-up" aria-hidden="true" id="currentLocMenuItem"> CurrentLocation</span></a>
+
+                </div>
+                <button class="btn btn-success" type="button" id="btnZipSearch" onclick="submitSearchInZipCode()">
+                    <i class="glyphicon glyphicon-search" style="height: 23px"></i>
+                </button>
             </div>
-            
-          </div>
+
+
+
+            </div>
+
         </div>
         <div class="col-sm-4 col-md-4 col-lg-4" style="text-align: center"> <button class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/businessRegistration">SignUp</a></button>
             <button id="loginbtn" class="btn btn-link" type="button" style="font-size: large"><a href="${contextPath}/signin" id="loginlink">Login</a></button>
@@ -120,7 +144,7 @@
         <div class="col-sm-2 col-md-2 col-lg-2 col-md-offset-4" id="btnPanel">
             
             <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" id="promotype" style="font-size: 12px;margin-right:3px">Where do you want to go?
+                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" id="promotype" style="background-color: orange;font-size: 12px;margin-right:3px;">Where do you want to go?
                    </button>
                 <ul class="dropdown-menu"  id="dropdown">
                     <li>
@@ -130,7 +154,7 @@
                     </li>
                     <li>
                         <a href="#" class="small" data-value="1" tabIndex="-1">
-                            <input type="checkbox" id="resturantOnly" />&nbsp;Resturant Only
+                            <input type="checkbox" id="resturantOnly" />&nbsp;Restaurant Only
                         </a>
                     </li>
                     <li>
@@ -162,12 +186,12 @@
                     </li>
                 </ul>
             </div>
-            <select class="form-control" id="mileselect" style="font-size: 12px;background-color: orange;width:100px;color: white">
-                <option>How Far?</option>
-                <option>With in blocks of me</option>
-                <option>1 to 2 Miles</option>
-                <option>2 to 5 Miles</option>
-                <option>More Than 5 Miles</option>
+            <select class="form-control" id="mileselect" style="font-size: 12px;background-color: orange;width:100px;">
+                <option style="background-color: white">How Far?</option>
+                <option style="background-color: white">With in blocks of me</option>
+                <option style="background-color: white">1 to 2 Miles</option>
+                <option style="background-color: white">2 to 5 Miles</option>
+                <option style="background-color: white">More Than 5 Miles</option>
             </select>
         </div>
 
@@ -177,7 +201,10 @@
 
 
 </div>
-    
+
+
+
+      </div>
   </div>
 </nav>
 

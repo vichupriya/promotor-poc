@@ -19,10 +19,11 @@ var printContent;
  function initMap() {
         var styles = [
             {
-                "featureType": "poi.business",
+                "featureType": "road",
+                "elementType": "labels",
                 "stylers": [
                     {
-                        "visibility": "off"
+                        "visibility": "on"
                     }
                 ]
             },
@@ -31,41 +32,40 @@ var printContent;
                 "elementType": "labels.icon",
                 "stylers": [
                     {
-                        "visibility": "off"
+                        "visibility": "on"
                     }
                 ]
             },
             {
-                "featureType": "road.arterial",
-                "elementType": "labels",
+                "featureType": "road",
+                "elementType": "labels.text",
                 "stylers": [
                     {
-                        "visibility": "off"
+                        "visibility": "on"
                     }
                 ]
             },
             {
-                "featureType": "road.highway",
-                "elementType": "labels",
+                "featureType": "road",
+                "elementType": "labels.text.fill",
                 "stylers": [
                     {
-                        "visibility": "off"
+                        "color": "#ff8040"
+                    },
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "weight": 2.5
                     }
                 ]
             },
             {
-                "featureType": "road.local",
+                "featureType": "road",
+                "elementType": "labels.text.stroke",
                 "stylers": [
                     {
-                        "visibility": "off"
-                    }
-                ]
-            },
-            {
-                "featureType": "transit",
-                "stylers": [
-                    {
-                        "visibility": "off"
+                        "visibility": "on"
                     }
                 ]
             }
@@ -73,7 +73,7 @@ var printContent;
        // var currentloc = {lat:  lat ,lng: lng};
        // var styledMap = new google.maps.StyledMapType(styles,{name: "Styled Map"});
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 10,
+            zoom: 50,
             styles: styles,
 
         });
@@ -92,6 +92,24 @@ var printContent;
 function getPromotions(){
 
      // getCurrentDateTimeAsString();
+    var devicelatlng = new google.maps.LatLng(lat,lng);
+
+    var deviceMarkerIcon = {
+        url: 'https://raw.github.com/phatblat/BlueDot/0.1.1/bluedot.gif',
+        scaledSize: new google.maps.Size(35, 35),
+    };
+
+    var currentLocMarker =  new google.maps.Marker({
+
+        position: devicelatlng,
+        map: map,
+        fontSize: 10,
+        strokeWeight: 3,
+        icon: deviceMarkerIcon,
+        animation: google.maps.Animation.DROP,
+        align: 'right'
+
+    });
 
      clearMarkerArray();
      var url = $("#searchForm").attr( "action") ;
@@ -129,7 +147,7 @@ function getPromotions(){
         "withInMiles": milesRange,
             "searchZipCode": userZip,
             "resturantType": resturantType,
-            "currentTime": getCurrentDateTimeAsString(),
+            "currentTime": getFormattedDate(new Date()),
             "userLat": userLat,
             "userLong": userLong,
             "searchType": searchTypeCode
@@ -165,14 +183,17 @@ function displayPromoInfoModal(promoModalContent,mailToContent){
 function preparePromoModal(modalData){
 
     //var modalContent =promotions.businessName+":"+promotions.formattedAddress+":"+promotions.promotionDescription+":"+promotions.promotionCode;
-    modalContent = modalData.split(":");
-    var promoCode ='<div class="offer-code">Code :'+modalContent[3]+'</div>';
-    var promoModalContent ='<div class="offer-redemption-content"><h1>'+modalContent[0]+'</h1>' +
-        ' <span >'+modalContent[1]+'</span><br><em id="promoDesc">'+modalContent[2]+'</em >'+promoCode+'</div><div id="print-view">';
-    printContent = promoModalContent;
-    var mailBody = modalContent[2]+'\n'+"Code :"+modalContent[3]+'\n'+modalContent[0]+'\n'+modalContent[1]+'\n\n';
-    var mailToContent = "mailto:?subject=Look At The Offer Inside&body="+encodeURIComponent(mailBody);
-    displayPromoInfoModal(promoModalContent,mailToContent);
+    if(typeof modalData != "undefined" && modalData!='') {
+        modalContent = modalData.split(":");
+        var expiryDate = modalContent[4] + ":" + modalContent[5];
+        var promoCode = '<div class="offer-code">Code :<strong>' + modalContent[3] + '</strong><br></div>';
+        var promoModalContent = '<div class="offer-redemption-content"><h1>' + modalContent[0] + '</h1>' +
+            ' <span >' + modalContent[1] + '</span><br><em id="promoDesc">' + modalContent[2] + '</em >' + promoCode + '<br>Expiry :<span class="label label-danger">' + expiryDate + '</span></div><div id="print-view"><span>Issued Date:'+getFormattedDate(new Date())+'</span></div>';
+       // printContent = '<html><body>'+promoModalContent +'<span>'+'Issued Date: '+getFormattedDate(new Date())+'</span></div></div></body></html>';
+        var mailBody = modalContent[2] + '\n' + "Code :" + modalContent[3] + '\n' + modalContent[0] + '\n' + modalContent[1] + '\n' + expiryDate + '\n\n'+'Issued Date :'+getFormattedDate(new Date());
+        var mailToContent = "mailto:?subject=Look At The Offer Inside&body=" + encodeURIComponent(mailBody);
+        displayPromoInfoModal(promoModalContent, mailToContent);
+    }
 }
 function processPromotions(data){
 
@@ -205,19 +226,8 @@ function processPromotions(data){
             align: 'right'
 
         });
-/*
-  labelClass: "markerlabels",
-            labelStyle: {opacity: 0.75, visibility: false},
-            labelContent: markerLabel,
 
-
-        var promoCode ='<div class="offer-code">Code :'+promotions.promotionCode+'</div>';
-        var promoModalContent ='<div class="offer-redemption-content"><h1>'+promotions.businessName+'</h1>' +
-            ' <span >'+promotions.formattedAddress+'</span><br><em id="promoDesc">'+promotions.promotionDescription+'</em >'+promoCode+'</div><div id="print-view">';
-        printContent = promoModalContent;
-        var mailBody = promotions.promotionDescription+'\n'+"Code :"+promotions.promotionCode+'\n'+promotions.businessName+'\n'+promotions.formattedAddress+'\n\n';
-        var mailToContent = "mailto:?subject=Look At The Offer Inside&body="+encodeURIComponent(mailBody);*/
-        var modalData =promotions.businessName+":"+promotions.formattedAddress+":"+promotions.promotionDescription+":"+promotions.promotionCode;
+        var modalData =promotions.businessName+":"+promotions.formattedAddress+":"+promotions.promotionDescription+":"+promotions.promotionCode+":"+promotions.endTime;
         google.maps.event.addListener(marker, 'click', function () {
 
           preparePromoModal(modalData);
@@ -264,7 +274,7 @@ function processPromotions(data){
     if(data.length >0){
         map.fitBounds(bounds);
         map.panToBounds(bounds);
-        map.setZoom(10);
+       // map.setZoom(50);
     }else{
         $("#noPromoAlert").show();
     }
